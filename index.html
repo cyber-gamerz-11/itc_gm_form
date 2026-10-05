@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Member Registration | MPSC IT CLUB</title>
+    <meta name="description" content="Official General Member Registration Portal for MPSC IT Club.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Supabase JS Client for seamless direct/fallback database connectivity -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <style>
+        :root {
+            --deep-green: #0a2624;
+            --emerald-green: #00f5b4;
+            --emerald-glow: rgba(0, 245, 180, 0.4);
+            --matte-black: #051413;
+            --card-bg: rgba(6, 21, 20, 0.88);
+            --white: #ffffff;
+            --soft-gray: #9bb7b5;
+            --glass-border: rgba(0, 245, 180, 0.18);
+            --glass-border-hover: rgba(0, 245, 180, 0.45);
+            --input-bg: rgba(12, 38, 36, 0.6);
+            --input-border: rgba(0, 245, 180, 0.2);
+            --input-focus-border: #00f5b4;
+            --input-focus-glow: 0 0 16px rgba(0, 245, 180, 0.25);
+            --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--matte-black);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+            padding: 50px 16px;
+        }
+
+        /* Subtle Background Grid */
+        .futuristic-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image:
+                linear-gradient(rgba(0, 245, 180, 0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 245, 180, 0.035) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Ambient Glow Blobs */
+        .glow-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .glow-blob-1 {
+            width: 500px;
+            height: 500px;
+            background: rgba(0, 245, 180, 0.09);
+            top: -150px;
+            left: 15%;
+        }
+        .glow-blob-2 {
+            width: 450px;
+            height: 450px;
+            background: rgba(10, 38, 36, 0.4);
+            bottom: -100px;
+            right: 15%;
+        }
+
+        /* Main Container */
+        .main-wrapper {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 580px;
+            margin: 0 auto;
+        }
+
+        /* Registration Card */
+        .reg-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 42px 36px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 40px rgba(0, 245, 180, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Sleek Top Neon Line */
+        .reg-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--emerald-green), #00d2ff, transparent);
+        }
+
+        /* Header Section */
+        .header-content {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Main Logo Slot */
+        .main-logo-container {
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 80px;
+        }
+
+        .main-club-logo {
+            max-height: 85px;
+            max-width: 180px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 0 16px var(--emerald-glow));
+            transition: var(--transition);
+        }
+
+        .main-club-logo:hover {
+            transform: scale(1.03);
+            filter: drop-shadow(0 0 22px var(--emerald-glow));
+        }
+
+        .club-title {
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: var(--white);
+            letter-spacing: -0.5px;
+            line-height: 1.15;
+            margin-bottom: 8px;
+        }
+
+        .emerald-text {
+            color: var(--emerald-green);
+            text-shadow: 0 0 18px rgba(0, 245, 180, 0.5);
+            display: block;
+            margin-top: 2px;
+        }
+
+        .club-subtitle {
+            color: var(--soft-gray);
+            font-size: 0.92rem;
+            font-weight: 400;
+            line-height: 1.4;
+            max-width: 440px;
+            margin: 0 auto;
+        }
+
+        /* Deadline Banner */
+        .deadline-box {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: linear-gradient(135deg, rgba(10, 38, 36, 0.7), rgba(5, 20, 19, 0.9));
+            border: 1px solid var(--input-border);
+            border-left: 4px solid var(--emerald-green);
+            padding: 14px 18px;
+            border-radius: 14px;
+            margin-bottom: 28px;
+        }
+
+        .deadline-box i {
+            font-size: 1.4rem;
+            color: var(--emerald-green);
+        }
+
+        .deadline-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .deadline-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: var(--soft-gray);
+            text-transform: uppercase;
+        }
+
+        .deadline-value {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 0.3px;
+        }
+
+        /* Form */
+        .reg-form {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .input-group label i {
+            color: var(--emerald-green);
+            font-size: 0.85rem;
+            width: 14px;
+            text-align: center;
+        }
+
+        .req {
+            color: #ff5252;
+            font-size: 0.95rem;
+            line-height: 1;
+            margin-left: -2px;
+        }
+
+        /* Universal Professional Input & Select Styling */
+        .input-control,
+        .select-wrapper select {
+            width: 100%;
+            height: 50px;
+            padding: 0 16px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 12px;
+            color: var(--white);
+            font-size: 0.95rem;
+            font-weight: 400;
+            outline: none;
+            transition: var(--transition);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .input-control:hover,
+        .select-wrapper select:hover {
+            border-color: var(--glass-border-hover);
+        }
+
+        .input-control:focus,
+        .select-wrapper select:focus {
+            border-color: var(--input-focus-border);
+            background: rgba(14, 46, 44, 0.75);
+            box-shadow: var(--input-focus-glow), inset 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .input-control::placeholder {
+            color: rgba(155, 183, 181, 0.4);
+            font-weight: 400;
+        }
+
+        /* Select Styling & Custom Arrow */
+        .select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .select-wrapper select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            cursor: pointer;
+            padding-right: 42px;
+            background-color: var(--input-bg);
+        }
+
+        .select-wrapper select option {
+            background-color: #061918;
+            color: #ffffff;
+            padding: 12px;
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--emerald-green);
+            font-size: 0.8rem;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .select-wrapper:focus-within .select-arrow {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        /* Radio Options Section */
+        .radio-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .radio-title i {
+            color: var(--emerald-green);
+            font-size: 0.85rem;
+            width: 14px;
+            text-align: center;
+        }
+
+        .radio-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .radio-card {
+            cursor: pointer;
+            display: block;
+            position: relative;
+        }
+
+        .radio-card input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .radio-card-body {
+            height: 52px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 12px;
+            padding: 0 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .radio-card:hover .radio-card-body {
+            border-color: var(--glass-border-hover);
+        }
+
+        .radio-key {
+            width: 26px;
+            height: 26px;
+            background: rgba(0, 245, 180, 0.1);
+            border: 1px solid rgba(0, 245, 180, 0.3);
+            color: var(--emerald-green);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.82rem;
+            font-weight: 800;
+            transition: var(--transition);
+        }
+
+        .radio-label-text {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 0.8px;
+        }
+
+        .radio-check-icon {
+            margin-left: auto;
+            font-size: 1.1rem;
+            color: var(--emerald-green);
+            opacity: 0;
+            transform: scale(0.4);
+            transition: var(--transition);
+        }
+
+        .radio-card input:checked + .radio-card-body {
+            background: rgba(0, 245, 180, 0.12);
+            border-color: var(--emerald-green);
+            box-shadow: 0 0 18px rgba(0, 245, 180, 0.22);
+        }
+
+        .radio-card input:checked + .radio-card-body .radio-key {
+            background: var(--emerald-green);
+            color: var(--matte-black);
+        }
+
+        .radio-card input:checked + .radio-card-body .radio-check-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Register Button */
+        .btn-submit {
+            margin-top: 10px;
+            height: 54px;
+            background: linear-gradient(135deg, var(--emerald-green), #00c793);
+            color: #031412;
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            padding: 0 24px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 0 25px rgba(0, 245, 180, 0.35);
+            transition: var(--transition);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 35px rgba(0, 245, 180, 0.55);
+            background: linear-gradient(135deg, #26ffc5, var(--emerald-green));
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit.loading {
+            opacity: 0.75;
+            cursor: not-allowed;
+        }
+
+        .btn-text, .btn-loader {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-loader {
+            display: none;
+        }
+
+        .btn-submit.loading .btn-text {
+            display: none;
+        }
+
+        .btn-submit.loading .btn-loader {
+            display: flex;
+        }
+
+        /* Error Notification */
+        .error-banner {
+            display: none;
+            background: rgba(255, 82, 82, 0.12);
+            border: 1px solid #ff5252;
+            color: #ff8a80;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(2, 10, 9, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-card {
+            background: rgba(6, 21, 20, 0.96);
+            border: 1px solid var(--emerald-green);
+            border-radius: 24px;
+            padding: 38px 30px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 50px rgba(0, 245, 180, 0.25);
+            animation: popUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes popUp {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-icon {
+            width: 72px;
+            height: 72px;
+            background: rgba(0, 245, 180, 0.12);
+            border: 2px solid var(--emerald-green);
+            color: var(--emerald-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 25px rgba(0, 245, 180, 0.4);
+        }
+
+        .modal-heading {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+
+        .modal-msg {
+            color: var(--soft-gray);
+            font-size: 0.96rem;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .modal-msg strong {
+            color: var(--emerald-green);
+        }
+
+        .modal-alert-box {
+            background: rgba(255, 171, 0, 0.08);
+            border: 1px solid rgba(255, 171, 0, 0.4);
+            border-left: 4px solid #ffab00;
+            border-radius: 12px;
+            padding: 14px 16px;
+            text-align: left;
+            margin-bottom: 24px;
+        }
+
+        .alert-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ffab00;
+            font-weight: 800;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .alert-text {
+            color: #f1f3f4;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        .alert-text strong {
+            color: #ffd54f;
+        }
+
+        .alert-steps {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px dashed rgba(255, 171, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.83rem;
+            color: #e2f0ee;
+        }
+
+        .step-item i {
+            color: var(--emerald-green);
+            font-size: 0.85rem;
+            width: 16px;
+            text-align: center;
+        }
+
+        .btn-modal-close {
+            width: 100%;
+            background: var(--emerald-green);
+            color: #031412;
+            font-weight: 800;
+            font-size: 0.95rem;
+            letter-spacing: 0.8px;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-modal-close:hover {
+            background: #26ffc5;
+            box-shadow: 0 0 20px rgba(0, 245, 180, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            body {
+                padding: 24px 12px;
+            }
+            .reg-card {
+                padding: 30px 18px;
+                border-radius: 20px;
+            }
+            .club-title {
+                font-size: 1.7rem;
+            }
+            .form-row,
+            .radio-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Grid & Aura Blobs -->
+    <div class="futuristic-grid"></div>
+    <div class="glow-blob glow-blob-1"></div>
+    <div class="glow-blob glow-blob-2"></div>
+
+    <div class="main-wrapper">
+        <div class="reg-card">
+            <!-- Header Section with Dedicated Main Logo -->
+            <div class="header-content">
+                <div class="main-logo-container" id="logo-wrapper">
+                    <!-- MAIN LOGO: Supports local relative paths, server paths and fallbacks -->
+                    <img src="static/assets/logos/logo.png" alt="MPSC IT CLUB" class="main-club-logo" id="main-logo-img" onerror="if(this.dataset.fallback !== '1'){this.dataset.fallback='1';this.src='static/assets/images/logo1.png';}else if(this.dataset.fallback !== '2'){this.dataset.fallback='2';this.src='/static/assets/logos/logo.png';}">
+                </div>
+                
+                <h1 class="club-title">
+                    General Member 
+                    <span class="emerald-text">Registration</span>
+                </h1>
+                <p class="club-subtitle">Fill out the official registration form to join as a General Member</p>
+            </div>
+
+            <!-- Deadline Box -->
+            <div class="deadline-box">
+                <i class="fa-regular fa-calendar-check"></i>
+                <div class="deadline-info">
+                    <span class="deadline-title">Deadline for Registration</span>
+                    <span class="deadline-value">October 15, 2026</span>
+                </div>
+            </div>
+
+            <!-- Error Banner -->
+            <div class="error-banner" id="error-banner"></div>
+
+            <!-- Registration Form -->
+            <form id="registration-form" class="reg-form" autocomplete="off" onsubmit="return false;">
+                <!-- Class & Section -->
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="class-select">
+                            <i class="fa-solid fa-graduation-cap"></i> WHICH CLASS ARE YOU FROM? <span class="req">*</span>
+                        </label>
+                        <div class="select-wrapper">
+                            <select id="class-select" required>
+                                <option value="" disabled selected>Select class</option>
+                                <option value="Class 6">Class 6</option>
+                                <option value="Class 7">Class 7</option>
+                                <option value="Class 8">Class 8</option>
+                                <option value="Class 9">Class 9</option>
+                                <option value="Class 10">Class 10</option>
+                                <option value="Class 11">Class 11</option>
+                                <option value="Class 12">Class 12</option>
+                            </select>
+                            <i class="fa-solid fa-chevron-down select-arrow"></i>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="section-select">
+                            <i class="fa-solid fa-layer-group"></i> WHICH SECTION ARE YOU IN? <span class="req">*</span>
+                        </label>
+                        <div class="select-wrapper">
+                            <select id="section-select" required>
+                                <option value="" disabled selected>Select section</option>
+                                <option value="A">Section A</option>
+                                <option value="B">Section B</option>
+                                <option value="C">Section C</option>
+                                <option value="D">Section D</option>
+                                <option value="E">Section E</option>
+                                <option value="F">Section F</option>
+                                <option value="G">Section G</option>
+                                <option value="H">Section H</option>
+                            </select>
+                            <i class="fa-solid fa-chevron-down select-arrow"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Full Name -->
+                <div class="input-group">
+                    <label for="full-name">
+                        <i class="fa-solid fa-user"></i> YOUR NAME <span class="req">*</span>
+                    </label>
+                    <input type="text" id="full-name" class="input-control" placeholder="Enter your full name" required>
+                </div>
+
+                <!-- Email -->
+                <div class="input-group">
+                    <label for="email-addr">
+                        <i class="fa-solid fa-envelope"></i> YOUR EMAIL ADDRESS <span class="req">*</span>
+                    </label>
+                    <input type="email" id="email-addr" class="input-control" placeholder="name@example.com" required>
+                </div>
+
+                <!-- WhatsApp -->
+                <div class="input-group">
+                    <label for="whatsapp-no">
+                        <i class="fa-brands fa-whatsapp"></i> YOUR WHATSAPP NUMBER <span class="req">*</span>
+                    </label>
+                    <input type="tel" id="whatsapp-no" class="input-control" placeholder="01XXXXXXXXX" required>
+                </div>
+
+                <!-- Previous Club -->
+                <div class="radio-section">
+                    <label class="radio-title">
+                        <i class="fa-solid fa-clock-rotate-left"></i> WERE YOU PART OF ANY IT CLUB BEFORE? <span class="req">*</span>
+                    </label>
+                    <div class="radio-grid">
+                        <label class="radio-card" for="prev-yes">
+                            <input type="radio" name="previous_it_club" id="prev-yes" value="Yes" required>
+                            <div class="radio-card-body">
+                                <span class="radio-key">A</span>
+                                <span class="radio-label-text">YES</span>
+                                <i class="fa-solid fa-circle-check radio-check-icon"></i>
+                            </div>
+                        </label>
+
+                        <label class="radio-card" for="prev-no">
+                            <input type="radio" name="previous_it_club" id="prev-no" value="No">
+                            <div class="radio-card-body">
+                                <span class="radio-key">B</span>
+                                <span class="radio-label-text">NO</span>
+                                <i class="fa-solid fa-circle-check radio-check-icon"></i>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-submit" id="submit-btn">
+                    <span class="btn-text">
+                        <i class="fa-solid fa-user-plus"></i> REGISTER AS GENERAL MEMBER
+                    </span>
+                    <span class="btn-loader">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Submitting...
+                    </span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="success-modal">
+        <div class="modal-card">
+            <div class="modal-icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h2 class="modal-heading">Registration Submitted!</h2>
+            <p class="modal-msg">
+                Welcome, <strong id="modal-user-name">Member</strong>! Your information has been successfully recorded in the MPSC IT Club database.
+            </p>
+
+            <div class="modal-alert-box">
+                <div class="alert-header">
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                    <span>Important: Pay Fee to EC Member</span>
+                </div>
+                <p class="alert-text">
+                    To officially finalize and activate your General Membership, please <strong>pay the membership fee in cash</strong> directly to any <strong>EC (Executive Committee) member</strong> at school/college.
+                </p>
+                <div class="alert-steps">
+                    <div class="step-item"><i class="fa-solid fa-check"></i> <span>Online form submitted & saved</span></div>
+                    <div class="step-item"><i class="fa-solid fa-coins"></i> <span>Pay membership fee in cash to any EC member</span></div>
+                    <div class="step-item"><i class="fa-solid fa-id-card"></i> <span>EC member activates your official membership</span></div>
+                </div>
+            </div>
+
+            <button class="btn-modal-close" id="btn-close-modal">
+                <i class="fa-solid fa-check-double"></i> I Understand & Got It
+            </button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // Supabase credentials for direct/fallback connectivity
+            const SB_URL = "https://jojiibkyopuebzceimyi.supabase.co";
+            const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvamlpYmt5b3B1ZWJ6Y2VpbXlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMTI4MzcsImV4cCI6MjEwNjc4ODgzN30.6rNMkOq83jZ6FdLS6nKYBTtI15YJ6FyZQtRcftX-mG0";
+
+            let dbClient = null;
+            if (window.supabase && typeof window.supabase.createClient === 'function') {
+                try {
+                    dbClient = window.supabase.createClient(SB_URL, SB_KEY);
+                } catch (err) {
+                    console.warn('Supabase direct client initialization warning:', err);
+                }
+            }
+
+            const form = document.getElementById('registration-form');
+            const submitBtn = document.getElementById('submit-btn');
+            const errorBanner = document.getElementById('error-banner');
+            const modal = document.getElementById('success-modal');
+            const closeModalBtn = document.getElementById('btn-close-modal');
+
+            function showError(msg) {
+                if (!errorBanner) return;
+                errorBanner.textContent = msg;
+                errorBanner.style.display = 'block';
+                errorBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            function clearError() {
+                if (!errorBanner) return;
+                errorBanner.textContent = '';
+                errorBanner.style.display = 'none';
+            }
+
+            function showSuccessPopup(fullName) {
+                const userNameEl = document.getElementById('modal-user-name');
+                if (userNameEl) userNameEl.textContent = fullName;
+                if (modal) {
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            function closeModal() {
+                if (modal) modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', closeModal);
+            }
+
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) closeModal();
+                });
+            }
+
+            async function handleFormSubmit(e) {
+                if (e && e.preventDefault) e.preventDefault();
+                clearError();
+
+                const classEl = document.getElementById('class-select');
+                const sectionEl = document.getElementById('section-select');
+                const nameEl = document.getElementById('full-name');
+                const emailEl = document.getElementById('email-addr');
+                const whatsappEl = document.getElementById('whatsapp-no');
+                const prevClubEl = document.querySelector('input[name="previous_it_club"]:checked');
+
+                const className = classEl ? classEl.value : '';
+                const section = sectionEl ? sectionEl.value : '';
+                const fullName = nameEl ? nameEl.value.trim() : '';
+                const email = emailEl ? emailEl.value.trim() : '';
+                const whatsapp = whatsappEl ? whatsappEl.value.trim() : '';
+                const prevClub = prevClubEl ? prevClubEl.value : '';
+
+                if (!className) return showError('Please select your class.');
+                if (!section) return showError('Please select your section.');
+                if (!fullName) return showError('Please enter your full name.');
+                if (!email) return showError('Please enter your email address.');
+                if (!whatsapp) return showError('Please enter your WhatsApp number.');
+                if (!prevClub) return showError('Please select whether you were part of an IT club before.');
+
+                const payload = {
+                    class_name: className,
+                    section: section,
+                    name: fullName,
+                    full_name: fullName,
+                    email: email,
+                    whatsapp: whatsapp,
+                    whatsapp_number: whatsapp,
+                    previous_club: prevClub,
+                    previous_it_club: prevClub
+                };
+
+                if (submitBtn) {
+                    submitBtn.classList.add('loading');
+                    submitBtn.disabled = true;
+                }
+
+                let registered = false;
+
+                // 1. Try Flask API backend first
+                try {
+                    const res = await fetch('/api/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data && data.success) {
+                            registered = true;
+                        }
+                    } else {
+                        const data = await res.json().catch(() => ({}));
+                        if (data && data.error) {
+                            showError(data.error);
+                            if (submitBtn) {
+                                submitBtn.classList.remove('loading');
+                                submitBtn.disabled = false;
+                            }
+                            return;
+                        }
+                    }
+                } catch (flaskErr) {
+                    console.log('Flask backend endpoint skipped or unreachable, using direct Supabase client fallback...');
+                }
+
+                // 2. Direct Supabase Client fallback
+                if (!registered) {
+                    if (dbClient) {
+                        try {
+                            // Check duplicate email
+                            const { data: existingRecords, error: checkErr } = await dbClient
+                                .from('gm_registrations')
+                                .select('id')
+                                .eq('email', email)
+                                .limit(1);
+
+                            if (existingRecords && existingRecords.length > 0) {
+                                showError('This email address has already been registered.');
+                                if (submitBtn) {
+                                    submitBtn.classList.remove('loading');
+                                    submitBtn.disabled = false;
+                                }
+                                return;
+                            }
+
+                            // Insert new registration
+                            const { data: insertResult, error: insertErr } = await dbClient
+                                .from('gm_registrations')
+                                .insert([{
+                                    name: fullName,
+                                    email: email,
+                                    whatsapp: whatsapp,
+                                    class_name: className,
+                                    section: section,
+                                    previous_club: prevClub
+                                }]);
+
+                            if (insertErr) {
+                                console.error('Supabase direct insert error:', insertErr);
+                                showError(insertErr.message || 'Failed to submit registration to database.');
+                                if (submitBtn) {
+                                    submitBtn.classList.remove('loading');
+                                    submitBtn.disabled = false;
+                                }
+                                return;
+                            }
+
+                            registered = true;
+                        } catch (sbErr) {
+                            console.error('Supabase direct execution exception:', sbErr);
+                            showError('Database error. Please check your internet connection and try again.');
+                            if (submitBtn) {
+                                submitBtn.classList.remove('loading');
+                                submitBtn.disabled = false;
+                            }
+                            return;
+                        }
+                    } else {
+                        showError('Unable to connect to database. Please check your connection.');
+                        if (submitBtn) {
+                            submitBtn.classList.remove('loading');
+                            submitBtn.disabled = false;
+                        }
+                        return;
+                    }
+                }
+
+                if (registered) {
+                    if (form) form.reset();
+                    showSuccessPopup(fullName);
+                }
+
+                if (submitBtn) {
+                    submitBtn.classList.remove('loading');
+                    submitBtn.disabled = false;
+                }
+            }
+
+            if (form) {
+                form.addEventListener('submit', handleFormSubmit);
+            }
+            if (submitBtn) {
+                submitBtn.addEventListener('click', (e) => {
+                    // Trigger form validation or submission
+                    if (form.checkValidity && !form.checkValidity()) {
+                        form.reportValidity();
+                    } else {
+                        handleFormSubmit(e);
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

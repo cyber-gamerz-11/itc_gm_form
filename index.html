@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +8,13 @@
     <meta name="description" content="Official General Member Registration Portal for MPSC IT Club.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Supabase JS Client for seamless direct/fallback database connectivity -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
+
     <style>
         :root {
             --deep-green: #0a2624;
@@ -73,6 +76,7 @@
             pointer-events: none;
             z-index: 0;
         }
+
         .glow-blob-1 {
             width: 500px;
             height: 500px;
@@ -80,6 +84,7 @@
             top: -150px;
             left: 15%;
         }
+
         .glow-blob-2 {
             width: 450px;
             height: 450px;
@@ -420,18 +425,18 @@
             transition: var(--transition);
         }
 
-        .radio-card input:checked + .radio-card-body {
+        .radio-card input:checked+.radio-card-body {
             background: rgba(0, 245, 180, 0.12);
             border-color: var(--emerald-green);
             box-shadow: 0 0 18px rgba(0, 245, 180, 0.22);
         }
 
-        .radio-card input:checked + .radio-card-body .radio-key {
+        .radio-card input:checked+.radio-card-body .radio-key {
             background: var(--emerald-green);
             color: var(--matte-black);
         }
 
-        .radio-card input:checked + .radio-card-body .radio-check-icon {
+        .radio-card input:checked+.radio-card-body .radio-check-icon {
             opacity: 1;
             transform: scale(1);
         }
@@ -472,7 +477,8 @@
             cursor: not-allowed;
         }
 
-        .btn-text, .btn-loader {
+        .btn-text,
+        .btn-loader {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -537,13 +543,25 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         @keyframes popUp {
-            from { transform: scale(0.85); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            from {
+                transform: scale(0.85);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         .modal-icon {
@@ -659,13 +677,16 @@
             body {
                 padding: 24px 12px;
             }
+
             .reg-card {
                 padding: 30px 18px;
                 border-radius: 20px;
             }
+
             .club-title {
                 font-size: 1.7rem;
             }
+
             .form-row,
             .radio-grid {
                 grid-template-columns: 1fr;
@@ -673,6 +694,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Background Grid & Aura Blobs -->
     <div class="futuristic-grid"></div>
@@ -685,11 +707,12 @@
             <div class="header-content">
                 <div class="main-logo-container" id="logo-wrapper">
                     <!-- MAIN LOGO: Supports local relative paths, server paths and fallbacks -->
-                    <img src="static/assets/logos/logo.png" alt="MPSC IT CLUB" class="main-club-logo" id="main-logo-img" onerror="if(this.dataset.fallback !== '1'){this.dataset.fallback='1';this.src='static/assets/images/logo1.png';}else if(this.dataset.fallback !== '2'){this.dataset.fallback='2';this.src='/static/assets/logos/logo.png';}">
+                    <img src="static/assets/logos/logo.png" alt="MPSC IT CLUB" class="main-club-logo" id="main-logo-img"
+                        onerror="if(this.dataset.fallback !== '1'){this.dataset.fallback='1';this.src='static/assets/images/logo1.png';}else if(this.dataset.fallback !== '2'){this.dataset.fallback='2';this.src='/static/assets/logos/logo.png';}">
                 </div>
-                
+
                 <h1 class="club-title">
-                    General Member 
+                    General Member
                     <span class="emerald-text">Registration</span>
                 </h1>
                 <p class="club-subtitle">Fill out the official registration form to join as a General Member</p>
@@ -713,16 +736,12 @@
                 <div class="form-row">
                     <div class="input-group">
                         <label for="class-select">
-                            <i class="fa-solid fa-graduation-cap"></i> WHICH CLASS ARE YOU FROM? <span class="req">*</span>
+                            <i class="fa-solid fa-graduation-cap"></i> WHICH CLASS ARE YOU FROM? <span
+                                class="req">*</span>
                         </label>
                         <div class="select-wrapper">
                             <select id="class-select" required>
                                 <option value="" disabled selected>Select class</option>
-                                <option value="Class 6">Class 6</option>
-                                <option value="Class 7">Class 7</option>
-                                <option value="Class 8">Class 8</option>
-                                <option value="Class 9">Class 9</option>
-                                <option value="Class 10">Class 10</option>
                                 <option value="Class 11">Class 11</option>
                                 <option value="Class 12">Class 12</option>
                             </select>
@@ -737,14 +756,11 @@
                         <div class="select-wrapper">
                             <select id="section-select" required>
                                 <option value="" disabled selected>Select section</option>
-                                <option value="A">Section A</option>
-                                <option value="B">Section B</option>
-                                <option value="C">Section C</option>
-                                <option value="D">Section D</option>
-                                <option value="E">Section E</option>
-                                <option value="F">Section F</option>
-                                <option value="G">Section G</option>
-                                <option value="H">Section H</option>
+                                <option value="BMR">BMR
+                                <option>
+                                <option value="BMJ">BMJ</option>
+                                <option value="BHR">BMR</option>
+                                <option value="BMK">BMK</option>
                             </select>
                             <i class="fa-solid fa-chevron-down select-arrow"></i>
                         </div>
@@ -778,7 +794,8 @@
                 <!-- Previous Club -->
                 <div class="radio-section">
                     <label class="radio-title">
-                        <i class="fa-solid fa-clock-rotate-left"></i> WERE YOU PART OF ANY IT CLUB BEFORE? <span class="req">*</span>
+                        <i class="fa-solid fa-clock-rotate-left"></i> WERE YOU PART OF ANY IT CLUB BEFORE? <span
+                            class="req">*</span>
                     </label>
                     <div class="radio-grid">
                         <label class="radio-card" for="prev-yes">
@@ -822,7 +839,8 @@
             </div>
             <h2 class="modal-heading">Registration Submitted!</h2>
             <p class="modal-msg">
-                Welcome, <strong id="modal-user-name">Member</strong>! Your information has been successfully recorded in the MPSC IT Club database.
+                Welcome, <strong id="modal-user-name">Member</strong>! Your information has been successfully recorded
+                in the MPSC IT Club database.
             </p>
 
             <div class="modal-alert-box">
@@ -831,12 +849,17 @@
                     <span>Important: Pay Fee to EC Member</span>
                 </div>
                 <p class="alert-text">
-                    To officially finalize and activate your General Membership, please <strong>pay the membership fee in cash</strong> directly to any <strong>EC (Executive Committee) member</strong> at school/college.
+                    To officially finalize and activate your General Membership, please <strong>pay the membership fee
+                        in cash</strong> directly to any <strong>EC (Executive Committee) member</strong> at
+                    school/college.
                 </p>
                 <div class="alert-steps">
-                    <div class="step-item"><i class="fa-solid fa-check"></i> <span>Online form submitted & saved</span></div>
-                    <div class="step-item"><i class="fa-solid fa-coins"></i> <span>Pay membership fee in cash to any EC member</span></div>
-                    <div class="step-item"><i class="fa-solid fa-id-card"></i> <span>EC member activates your official membership</span></div>
+                    <div class="step-item"><i class="fa-solid fa-check"></i> <span>Online form submitted & saved</span>
+                    </div>
+                    <div class="step-item"><i class="fa-solid fa-coins"></i> <span>Pay membership fee in cash to any EC
+                            member</span></div>
+                    <div class="step-item"><i class="fa-solid fa-id-card"></i> <span>EC member activates your official
+                            membership</span></div>
                 </div>
             </div>
 
@@ -847,7 +870,7 @@
     </div>
 
     <script>
-        (function() {
+        (function () {
             // Supabase credentials for direct/fallback connectivity
             const SB_URL = "https://jojiibkyopuebzceimyi.supabase.co";
             const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvamlpYmt5b3B1ZWJ6Y2VpbXlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMTI4MzcsImV4cCI6MjEwNjc4ODgzN30.6rNMkOq83jZ6FdLS6nKYBTtI15YJ6FyZQtRcftX-mG0";
@@ -1065,4 +1088,5 @@
         })();
     </script>
 </body>
+
 </html>
